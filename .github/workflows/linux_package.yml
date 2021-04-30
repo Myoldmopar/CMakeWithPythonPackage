@@ -31,6 +31,9 @@ jobs:
           sudo apt-get update
 #           sudo apt-get install nothing?
 
+      - name: Create Build Directory
+        run: cmake -E make_directory ./build/
+
       - name: Configure CMake
         working-directory: ./build
         shell: bash
