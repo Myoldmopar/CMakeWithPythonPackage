@@ -1,0 +1,5 @@
+# for auxiliary application running
+wxpython
+
+# for auxiliary application packaging
+pyinstaller
