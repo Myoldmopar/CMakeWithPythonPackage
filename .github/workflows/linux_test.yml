@@ -1,15 +1,12 @@
-name: Linux Releases
+name: Linux Testing
 
-on:
-  push:
-    tags:
-      - '*'
+on: [push]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  linux_release:
+  linux_test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -53,11 +50,11 @@ jobs:
         shell: bash
         run: cpack -G TGZ
 
-      - name: Upload Package
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/CmakeAppWithPythonPackaging-*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+#      - name: Upload Package
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          file: build/CmakeAppWithPythonPackaging-*
+#          tag: ${{ github.ref }}
+#          overwrite: true
+#          file_glob: true
