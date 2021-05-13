@@ -42,20 +42,20 @@ jobs:
         run: pip install pyinstaller ${{ matrix.wxpython }}
 
       - name: Create Build Directory
-        run: cmake -E make_directory ./build/
+        run: cmake -E make_directory ./cmake-build/
 
       - name: Configure CMake
-        working-directory: ./build
+        working-directory: ./cmake-build
         shell: bash
         run: cmake -DCMAKE_BUILD_TYPE=Release ../
 
       - name: Build Project
-        working-directory: ./build
+        working-directory: ./cmake-build
         shell: bash
         run: cmake --build . -j 2
 
       - name: Packaging
-        working-directory: ./build
+        working-directory: ./cmake-build
         shell: bash
         run: cpack -G ${{ matrix.generator }}
 
