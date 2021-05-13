@@ -18,5 +18,5 @@ include(CPack)
 install(TARGETS FakeEPlusWithPythonGuiApp)
 
 # Packaging of Python GUI application
-execute_process(COMMAND "pyinstaller" "--onefile" "python_gui/gui.py")
+execute_process(COMMAND "pyinstaller" "--onefile" "${CMAKE_SOURCE_DIR}/python_gui/gui.py")
 install(FILES ${CMAKE_BINARY_DIR}/dist/gui.exe DESTINATION "./")
