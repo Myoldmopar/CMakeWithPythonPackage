@@ -19,4 +19,4 @@ install(TARGETS FakeEPlusWithPythonGuiApp)
 
 # Packaging of Python GUI application
 execute_process(COMMAND "pyinstaller" "--onefile" "python_gui/gui.py")
-install(FILES dist/gui.exe DESTINATION "./")
+install(FILES ${CMAKE_BINARY_DIR}/dist/gui.exe DESTINATION "./")
