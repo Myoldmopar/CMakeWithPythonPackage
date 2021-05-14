@@ -4,3 +4,4 @@ cmake-build-debug/
 dist/
 *.spec
 venv/
+__pycache__/ *.py[cod]
