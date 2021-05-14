@@ -1,15 +1,12 @@
-name: Linux Releases
+name: Testing
 
-on:
-  push:
-    tags:
-      - '*'
+on: [push]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  packaging:
+  test:
     strategy:
       matrix:
         include:
@@ -17,18 +14,26 @@ jobs:
             pyinstall_args: ""
             wxpython: https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-18.04/wxPython-4.1.0-cp37-cp37m-linux_x86_64.whl
             generator: TGZ
+            cmake_extra_args: ""
+            cpack_extra_args: ""
           - os: ubuntu-18.04
             pyinstall_args: ""
             wxpython: https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-18.04/wxPython-4.1.0-cp37-cp37m-linux_x86_64.whl
             generator: TGZ
+            cmake_extra_args: ""
+            cpack_extra_args: ""
           - os: macos-10.15
             pyinstall_args: --onefile --windowed
             wxpython: wxpython
             generator: TGZ
+            cmake_extra_args: ""
+            cpack_extra_args: ""
           - os: windows-2019
             pyinstall_args: --windowed
             wxpython: wxpython
             generator: ZIP
+            cmake_extra_args: --config Release
+            cpack_extra_args: -C Release
 
     runs-on: ${{ matrix.os }}
 
@@ -55,18 +60,9 @@ jobs:
       - name: Build Project
         working-directory: ./cmake-build
         shell: bash
-        run: cmake --build . -j 2
+        run: cmake --build . -j 2 ${{ matrix.cmake_extra_args }}
 
       - name: Packaging
         working-directory: ./cmake-build
         shell: bash
-        run: cpack -G ${{ matrix.generator }}
-
-      - name: Upload Package
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: cmake-build/CmakeAppWithPythonPackaging-*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+        run: cpack -G ${{ matrix.generator }} ${{ matrix.cpack_extra_args }}

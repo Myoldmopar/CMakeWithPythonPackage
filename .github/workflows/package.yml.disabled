@@ -1,12 +1,15 @@
-name: Linux Testing
+name: Packaging
 
-on: [push]
+on:
+  push:
+    tags:
+      - '*'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  test:
+  packaging:
     strategy:
       matrix:
         include:
@@ -58,3 +61,12 @@ jobs:
         working-directory: ./cmake-build
         shell: bash
         run: cpack -G ${{ matrix.generator }}
+
+      - name: Upload Package
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: cmake-build/CmakeAppWithPythonPackaging-*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
